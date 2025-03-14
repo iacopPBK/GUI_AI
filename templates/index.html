@@ -1,78 +1,119 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scancaroonas Chat</title>
-    <link rel="stylesheet" type="text/css" href="\\src\style.css">
-    <link rel="shortcut icon" type="image/jpg" href="https://html.sammy-codes.com/images/small-profile.jpeg"/>
-
-</head>
 <body>
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Scancaroonas Chat</title>
+        <link rel="stylesheet" type="text/css" href="..\static\style.css">
+        <link rel="shortcut icon" type="image/jpg" href="https://html.sammy-codes.com/images/small-profile.jpeg"/>
+        <link rel="stylesheet" href="..\static\prism.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    </head>
+
     <div class="app">
-        <!-- Colonna laterale delle chat -->
+        <!-- Sidebar for conversations -->
         <div class="conversation-area">
-            <!-- Pulsante "Aggiungi chat" -->
-            <button class="add-chat" id="add-chat">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-                    <circle cx="12" cy="12" r="10" />
-                    <path d="M12 8v8M8 12h8" />
-                </svg>
-            </button>
-
-            <!-- Chat esistenti -->
-            <div class="msg active" id="chat-1" data-chat-id="1">
-                <div class="msg-detail">
-                    <div class="msg-username">Nome del modello</div>
-                    <div class="msg-message">Migas food truck crucifix vexi</div>
-                </div>
-            </div>
-            <!-- Altre chat verranno aggiunte qui dinamicamente -->
-        </div>
-
-    <!-- Area principale della chat -->
-        <div class="chat-area">
-            <div class="chat-container">
-                <div class="chat-header">
-                    <div class="chat-header-title" >Nome del modello</div>     
-                    <button id="open-settings">*</button>
-
-                          
-            </div>
-                <div class="chat-messages" id="chat"></div>
-                <div class="chat-input-area">
-                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" class="feather feather-plus-circle">
+            <!-- Chat persistence buttons -->
+            <div class="sidebar-top-controls">
+                <button class="add-chat" id="add-chat">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                         <circle cx="12" cy="12" r="10" />
                         <path d="M12 8v8M8 12h8" />
                     </svg>
-                    <input type="text" id="input" placeholder="Type your message...">
-                    <button id="send">></button>
+                </button>
+
+                <div class="chat-persistence-buttons">
+                    <button id="save-chat-button" class="persistence-button" title="Save Chat">
+                        <i class="fas fa-save"></i> Save
+                    </button>
+                    <button id="load-chat-button" class="persistence-button" title="Load Chat">
+                        <i class="fas fa-folder-open"></i> Load
+                    </button>
+                </div>
+            </div>
+
+            <!-- Chat list container -->
+            <div class="chat-list-container">
+                <!-- Chats will be added here dynamically -->
+            </div>
+        </div>
+
+        <!-- Main chat area -->
+        <div class="chat-area">
+            <div class="chat-container">
+                <div class="chat-header">
+                    <button id="open-conversations" class="mobile-button"><i class="fas fa-comment"></i></button>
+                    <div class="chat-header-title">Chat Model</div>
+                    <button id="open-settings" class="mobile-button"><i class="fas fa-cog"></i></button>
+                </div>
+                
+                <div class="chat-messages" id="chat">
+                    <div class="messages-container"></div>
+                </div>
+                
+                <div class="chat-input-area">
+                    <input type="text" id="input" ></input>
+                    <button id="send"><img src="../static/img/logo_willy_cyb.svg"/></button>
+                    <button id="stop-button"><i class="fas fa-stop"></i></button>
                 </div>
             </div>
         </div>
-                <!-- Finestra delle impostazioni -->
-                <div class="settings-window" id="settings-window">
-                    <div class="settings-header">Settings</div>
-                    <div class="control-selectors">
-                        <label for="model-select">Model:</label>
-                        <select id="model-select">
-                            <!-- Opzioni dei modelli -->
-                        </select><br>
-                        <label for="address-input">Address:</label>
-                        <input type="text" id="address-input" class="address-input" placeholder="Enter address...">
+
+        <!-- Settings window -->
+        <div class="settings-window" id="settings-window">
+            <div class="settings-header">Settings</div>
+            <div class="control-selectors">
+                <label for="model-select">Model:</label>
+                <select id="model-select">
+                    <!-- Model options will be added dynamically -->
+                </select>
+                
+                <label for="address-input">Address:</label>
+                <input type="text" id="address-input" class="address-input" placeholder="Enter address...">
+                
+                <label for="temperature-input">Temperature:</label>
+                <input type="text" id="temperature-input" class="temperature-input" placeholder="Enter temperature...">
+                
+                <label for="context-input">Context Length:</label>
+                <div class="context-control">
+                    <input type="text" id="context-input" class="context-input" placeholder="50 messages...">
+                    <button id="clear-context">Clear</button>
+                </div>
+            </div>
+            
+            <div class="settings-header">Select Role</div>
+            <div class="control-selectors" id="role-list">
+                <!-- Roles will be added dynamically -->
+            </div>
+            
+            <div class="settings-header">Performance Monitor</div>
+            <div class="performance-metrics">
+                <div id="token-stats">
+                    <div class="metric">
+                        <span class="metric-label">Total tokens:</span>
+                        <span class="metric-value" id="total-tokens">0</span>
                     </div>
-                    <div class="settings-header">Select Role</div>
-                    <div class="control-selectors" id="role-list">
-                        <label for="model-select">Role:</label>
-                        <select id="model-select">
-                            <!-- Opzioni dei modelli -->
-                        </select><br>
+                    <div class="metric">
+                        <span class="metric-label">Generation speed:</span>
+                        <span class="metric-value" id="tokens-per-second">0</span> <span class="metric-unit">tokens/sec</span>
+                    </div>
+                    <div class="metric">
+                        <span class="metric-label">Generation time:</span>
+                        <span class="metric-value" id="generation-time">0</span> <span class="metric-unit">sec</span>
                     </div>
                 </div>
-
+            </div>
+        </div>
     </div>
-
+    
+    <!-- Include scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/prism.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-javascript.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-css.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/prism-python.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.5.4/socket.io.js"></script>
-    <script type="text/javascript" src="src\js.js"></script>
+    <script type="text/javascript" src="..\static\js.js"></script>
 </body>
 </html>
